@@ -43,7 +43,8 @@ Features compute_features(const float *x, int N) {
    * For the moment, compute random value between 0 and 1 
    */
   Features feat;
-  feat.zcr = feat.p = compute_power(x,N);
+  feat.p = compute_power(x,N);
+  feat.zcr = compute_zcr(x, N, N/(FRAME_TIME*1e-03));
   return feat;
 }
 
@@ -57,6 +58,9 @@ VAD_DATA * vad_open(float rate, float alfa1) {
   vad_data->sampling_rate = rate;
   vad_data->frame_length = rate * FRAME_TIME * 1e-3;
   vad_data->alfa1 = alfa1;
+  vad_data->last_state = ST_INIT;                     /*Nos indica el últimos estada V ó S*/
+  vad_data->frame = 0;                                /*Indice del frame actual*/
+  vad_data->last_defined_frame = 0;                   /*Indice del último frame con V ó S*/
   return vad_data;
 }
 
@@ -64,7 +68,7 @@ VAD_STATE vad_close(VAD_DATA *vad_data) {
   /* 
    * TODO: decide what to do with the last undecided frames
    */
-  VAD_STATE state = vad_data->state;
+  VAD_STATE state = vad_data->last_state;
 
   free(vad_data);
   return state;
@@ -88,26 +92,56 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
 
   Features f = compute_features(x, vad_data->frame_length);
   vad_data->last_feature = f.p; /* save feature, in case you want to show */
+  //printf("%f\n", f.p);
 
   switch (vad_data->state) {
   case ST_INIT:
     vad_data->state = ST_SILENCE;
     vad_data->umbral = f.p + vad_data->alfa1;
+    vad_data->umbral_zcr = f.zcr + 2000; //abans 1500
     break;
 
   case ST_SILENCE:
-    if (f.p > vad_data->umbral)
-      vad_data->state = ST_VOICE;
+    if (f.p > vad_data->umbral){
+      vad_data->state = ST_MAYBE_VOICE;
+      vad_data->last_state = ST_SILENCE;
+      vad_data->last_defined_frame = vad_data->frame;
+    }
+
     break;
 
   case ST_VOICE:
-    if (f.p < vad_data->umbral)
+    if (f.p < vad_data->umbral){
+      vad_data->state = ST_MAYBE_SILENCE;
+      vad_data->last_state = ST_VOICE;
+      vad_data->last_defined_frame = vad_data->frame;
+    }
+    
+    break;
+
+  case ST_MAYBE_SILENCE:
+    if (f.p > vad_data->umbral || f.zcr > vad_data->umbral_zcr){
+      vad_data->state = ST_VOICE;
+    }
+    else if((vad_data->frame - vad_data->last_defined_frame) == 11){
       vad_data->state = ST_SILENCE;
+    }
+    break;
+  
+  case ST_MAYBE_VOICE:
+    if (f.p < vad_data->umbral && f.zcr < vad_data->umbral_zcr){
+      vad_data->state = ST_SILENCE;
+    }
+    else if((vad_data->frame - vad_data->last_defined_frame) == 1){
+      vad_data->state = ST_VOICE;
+    }
     break;
 
   case ST_UNDEF:
     break;
   }
+
+  vad_data->frame++;
 
   if (vad_data->state == ST_SILENCE ||
       vad_data->state == ST_VOICE)
