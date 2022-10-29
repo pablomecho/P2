@@ -111,10 +111,24 @@ Ejercicios
 
 	* Incremento del nivel potencia en dB, respecto al nivel correspondiente al silencio inicial, para
 	  estar seguros de que un segmento de señal se corresponde con voz.
+	  
+	  	```.sh
+	  	Incremento nivel de potencia respecto silencio: alrededor de 10dB
+	  	```
 
 	* Duración mínima razonable de los segmentos de voz y silencio.
+	
+	  	```.sh
+	  	Duración mínima voz: 400 ms
+		Duración mínima silencio: 100 ms
+	  	```
 
 	* ¿Es capaz de sacar alguna conclusión a partir de la evolución de la tasa de cruces por cero?
+
+	  	```.sh
+	  	Se puede observar que cuando el sonido es fricativo, aumenta la tasa de cruzes por cero. Sin embargo para sonidos sonoros, no se observa estos picos 
+		de la tasa de cruces por cero.
+	  	```
 
 
 ### Desarrollo del detector de actividad vocal
