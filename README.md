@@ -148,7 +148,10 @@ Ejercicios
 - Evalúe los resultados sobre la base de datos `db.v4` con el script `vad_evaluation.pl` e inserte a 
   continuación las tasas de sensibilidad (*recall*) y precisión para el conjunto de la base de datos (sólo
   el resumen).
+  
+  **`Una vez hecha toda la implementacion del código por parte del etiquetado, observamos los resultados en la siguiente imágen, en ella vemos el etiquetado manual, después una primera implementación en las que observamos que el etiquetado automático encuentra unos fragmentos de silencio muy pequeños, y finalmente otra implementación, en la que conseguimos eliminar estos fragmentos cortos. alrededor de 200ms que nossotros no clasificamos como silencio.`**
 
+<img src="img/Gráfica con etiquetado manual y automatico_con mayores restricciones.png" width="640" align="center">
 
 ### Trabajos de ampliación
 
