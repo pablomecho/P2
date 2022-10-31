@@ -89,10 +89,22 @@ int main(int argc, char *argv[]) {
     /* TODO: print only SILENCE and VOICE labels */
     /* As it is, it prints UNDEF segments but is should be merge to the proper value */
     if (state != last_state && state != ST_UNDEF) {
-      if (t != last_t)
-        fprintf(vadfile, "%.5f\t%.5f\t%s\n", last_t * frame_duration, t * frame_duration, state2str(last_state));
-      last_state = state;
-      last_t = t;
+      if (state==ST_VOICE) {
+        if (t != last_t && (0.15 < (t * frame_duration-last_t * frame_duration))) { /*hacer que los fragmentos de silencio tengan una duracion minima*/
+          fprintf(vadfile, "%.5f\t%.5f\t%s\n", last_t * frame_duration, t * frame_duration, state2str(last_state));
+          last_t = t;
+        }
+        last_state = state;
+      }
+      if (state==ST_SILENCE) {
+        if (t != last_t && (0.15 < (t * frame_duration-last_t * frame_duration))) { /*hacer que los fragmentos de voz tengan una duracion minima*/
+          fprintf(vadfile, "%.5f\t%.5f\t%s\n", last_t * frame_duration, t * frame_duration, state2str(last_state));
+          last_t = t;
+          
+        }
+        last_state = state;
+      }
+
     }
 
     if (sndfile_out != 0) {

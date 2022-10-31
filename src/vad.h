@@ -18,8 +18,11 @@ typedef struct {
   unsigned int frame_length;
   float last_feature; /* for debuggin purposes */
   float umbral;
+  float umbral_fric;
+  float umbral_amplitud;
   float alfa1;
-  int umbral_zcr;
+  int umbral_zcr_bajo;
+  int umbral_zcr_alto;
   int frame;                  /*Añadimos el índice de frame actual*/
   int last_defined_frame;     /*Añadimos el índice del último frame V ó S*/
 } VAD_DATA;
