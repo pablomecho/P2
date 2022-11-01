@@ -260,10 +260,12 @@ Como se puede observar en el código de abajo se ha optado por el uso de boolean
 FScore de nuestra frase
 
 <img src="img/run_vad lab.png" width="640" align="center">
+Al evaluar el resultado sobre nuestra frase grabada (pav_4171.lab) y utilizando el parámetro alfa1= 2, obtenemos una F-score de 91.766%. 
 
 FScore sobre la base de datos
 
 <img src="img/run_vad DB4.png" width="640" align="center">
+Haciendo la misma evaluación sobre la base de datos proporcionada y utilizando el mismo parámetro alfa1, obtenemos una F-score de 94.108%. 
 
 #### Resultado final del etiquetado automático
 
