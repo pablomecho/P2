@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
   int frame_size;         /* in samples */
   float frame_duration;   /* in seconds */
   unsigned int t, last_t, t1, last_t1; /* in frames */ /*tiempos auxiliares*/
+  
   float alfa1;
   unsigned int original_state = ST_SILENCE;
 
@@ -117,16 +118,24 @@ int main(int argc, char *argv[]) {
 
     }
 
+    /*si no hubieramos modificado la forma de imprimir los estados por tal que tengan una longitud mínima, 
+    la forma más facil de poner a cero los segmentos de silencio es la siguiente*/
     if (sndfile_out != 0) {
       /* TODO: go back and write zeros in silence segments */
+      if (state == ST_SILENCE || state == ST_UNDEF){
+        sf_seek(sndfile_out, frame_size*t, SEEK_SET);
+        sf_write_float(sndfile_out, buffer_zeros, frame_size);
+      }
     }
   }
 
   state = vad_close(vad_data);
   /* TODO: what do you want to print, for last frames? */
   if (t != last_t) {
-    fprintf(vadfile, "%.5f\t%.5f\t%s\n", last_t1 * frame_duration, last_t * frame_duration + n_read / (float) sf_info.samplerate, state2str(original_state));
-    fprintf(vadfile, "%.5f\t%.5f\t%s\n", last_t * frame_duration, t * frame_duration + n_read / (float) sf_info.samplerate, state2str(state));
+    //printf("last_t1: %f\t last_t: %f\t t: %f\n", last_t1, last_t, t);
+    //fprintf(vadfile, "\n");
+    fprintf(vadfile, "%.5f\t%.5f\t%s\n", last_t1 * frame_duration, last_t * frame_duration , state2str(original_state));
+    fprintf(vadfile, "%.5f\t%.5f\t%s\n", last_t * frame_duration , t * frame_duration + n_read / (float) sf_info.samplerate, state2str(state));
   }
 
 
