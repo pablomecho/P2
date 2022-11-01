@@ -8,12 +8,12 @@
 
 const float FRAME_TIME = 10.0F; /* in ms. */
 const int N_INIT = 4;                   /*iteraciones iniciales sobre las que haremos medias de las features*/
-const int UNDECIDED_V_FRAMES = 1;       /**/
-const int UNDECIDED_S_FRAMES = 9;        /**/
-const float LLINDAR_FRIC = 0.9;         /**/
-const float ZCR_LOW = 1.4;    /**/
-const float ZCR_HIGH = 1.4;   /**/
-const float AMPLITUDE_OFFSET = 3.6;     /**/
+const int UNDECIDED_V_FRAMES = 1;       /*Tramas de ST_MAYBE_VOICE máximas*/
+const int UNDECIDED_S_FRAMES = 9;        /*Tramas de ST_MAYBE_SILENCE máximas*/
+const float LLINDAR_FRIC = 0.9;         /*Coeficiente para el umbral de las fricativas*/
+const float ZCR_LOW = 1.4;              /*Coeficiente para el umbral de ZCR baja*/
+const float ZCR_HIGH = 1.4;             /*Coeficiente para el umbral ze ZCR alta*/
+const float AMPLITUDE_OFFSET = 3.6;     /*Coeficiente para el umbral de amplitud*/
 
 /* 
  * As the output state is only ST_VOICE, ST_SILENCE, or ST_UNDEF,
