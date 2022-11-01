@@ -83,6 +83,7 @@ int main(int argc, char *argv[]) {
 
     if (sndfile_out != 0) {
       /* TODO: copy all the samples into sndfile_out */
+      sf_write_float(sndfile_out,buffer,frame_size);
     }
 
     state = vad(vad_data, buffer);
