@@ -157,7 +157,7 @@ A partir de este punto, explicaremos el código elaborado.
 
 ### Código del fichero **vad.c**
 
-####Constantes y umbrales
+#### Constantes y umbrales
 
 ```c
 const float FRAME_TIME = 10.0F; /* in ms. */
@@ -170,7 +170,7 @@ const float ZCR_HIGH = 1.4;             /*Coeficiente para el umbral ze ZCR alta
 const float AMPLITUDE_OFFSET = 3.6;     /*Coeficiente para el umbral de amplitud*/
 ```
 
-####Cálculo de las Features
+#### Cálculo de las Features
 
 Para realizar el cálculo de las features (Potencia, ZCR e Amplitud media), hacemos uso de las funciones elaboradas en la práctica. Por lo tanto, la función __*Features compute_features*__, la qual nos guarda los valores calculados de Potencia, ZCR e amplitud media en la variable feat.
 
@@ -187,7 +187,7 @@ Features compute_features(const float *x, int N) {
 
 ```
 
-###Implementación del FSA (Finite State Automata), para la detección de voz
+### Implementación del FSA (Finite State Automata), para la detección de voz
 
 Como se puede observar en el código de abajo se ha optado por el uso de booleanos, esto es debido a que al utilizar las condiciones para la feature de zcr  (cruzes por cero), para diferenciar fonemas fricativos, los cuales tienen una tasa de cruces por cero mayor, una tasa de cruces por cero menor al ser una vocal o fonema sonoro i una tasa media de cruces por cero cuando hay ruido, por ese motivo, se opto el uso  de booleanos, para simplificar la comprensión del código. Para hacer uso de ellos, hemos tenido que añadir la libreia <stdbool.h>
 
@@ -264,6 +264,10 @@ FScore de nuestra frase
 FScore sobre la base de datos
 
 <img src="img/run_vad DB4.png" width="640" align="center">
+
+#### Resultado final del etiquetado automático
+
+<img src="img/etiquetado automatico final.png" width="640" align="center">
 
 ### Trabajos de ampliación
 
