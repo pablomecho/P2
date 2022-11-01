@@ -149,7 +149,7 @@ Ejercicios
   continuación las tasas de sensibilidad (*recall*) y precisión para el conjunto de la base de datos (sólo
   el resumen).
   
-  **`Una vez hecha toda la implementacion del código por parte del etiquetado, observamos los resultados en la siguiente imágen, en ella vemos el etiquetado manual, después una primera implementación en las que observamos que el etiquetado automático encuentra unos fragmentos de silencio muy pequeños, y finalmente otra implementación, en la que conseguimos eliminar estos fragmentos cortos. alrededor de 200ms que nossotros no clasificamos como silencio.`**
+  **`Una vez hecha toda la implementacion del código por parte del etiquetado, observamos los resultados en la siguiente imágen, en ella vemos el etiquetado manual, después una primera implementación en las que observamos que el etiquetado automático encuentra unos fragmentos de silencio muy pequeños, y finalmente otra implementación, en la que conseguimos eliminar estos fragmentos cortos. alrededor de 200ms que nossotros no clasificamos como silencio. Se puede observar que en la última transcripcción hay segmentos repetidos, esto es debido a que el sistema actual al detectar el canvio de estado de S a V o bien de V a S imprime el segmento directamente en el documento, más adelante se observa una gráfica con una transcripción automatica que corrije este problema.`**
 
 <img src="img/Gráfica con etiquetado manual y automatico_con mayores restricciones.png" width="640" align="center">
 
@@ -169,6 +169,7 @@ const float ZCR_LOW = 1.4;              /*Coeficiente para el umbral de ZCR baja
 const float ZCR_HIGH = 1.4;             /*Coeficiente para el umbral ze ZCR alta*/
 const float AMPLITUDE_OFFSET = 3.6;     /*Coeficiente para el umbral de amplitud*/
 ```
+Estas son las constantes que nos maximizan la FSCORE de la base de datos, otra variable que nos maximiza la FSCORE es alfa1, la cual por defecto es 2 i se puede canviar su valor mediante la ejecucion desde el terminal.
 
 #### Cálculo de las Features
 
@@ -260,11 +261,13 @@ Como se puede observar en el código de abajo se ha optado por el uso de boolean
 FScore de nuestra frase
 
 <img src="img/run_vad lab.png" width="640" align="center">
-Al evaluar el resultado sobre nuestra frase grabada (pav_4171.lab) y utilizando el parámetro alfa1= 2, obtenemos una F-score de 91.766%. 
+
+Al evaluar el resultado sobre nuestra frase grabada (pav_4171.lab) y utilizando el parámetro alfa1= 2, obtenemos una F-score de 91.766%. Podemos observar como los segmentos de voz detectados automaticamente son un poco mayores, por lo tanto detectamos practicamente todos los segmentos de voz.
 
 FScore sobre la base de datos
 
 <img src="img/run_vad DB4.png" width="640" align="center">
+
 Haciendo la misma evaluación sobre la base de datos proporcionada y utilizando el mismo parámetro alfa1, obtenemos una F-score de 94.108%. 
 
 #### Resultado final del etiquetado automático
@@ -272,7 +275,7 @@ Haciendo la misma evaluación sobre la base de datos proporcionada y utilizando 
 <img src="img/etiquetado automatico final.png" width="640" align="center">
 
 En la gráfica anterior de etiquetado automático, podemos observar algunas pequeñas diferencias respecto al etiquetado manual. Nos fijamos básicamente en dos.
-La primera, un pqueño retardo para empezar a detectar el silencio. El detector automático racciona un poco tarde cuando la voz ya ha acabado. Aunque es una diferencia mínima.
+La primera, un pequeño retardo para empezar a detectar el silencio. El detector automático racciona un poco tarde cuando la voz ya ha acabado. Aunque es una diferencia mínima.
 La segunda diferencia, es con los comienzos de la voz. El detector, empieza a mostrar como voz un poco más tarde, y la confunde con un silencio. Aunque, este segundo problema se muestra menos, y está bastante ajustado.
 
 ### Trabajos de ampliación
@@ -282,17 +285,23 @@ La segunda diferencia, es con los comienzos de la voz. El detector, empieza a mo
 - Si ha desarrollado el algoritmo para la cancelación de los segmentos de silencio, inserte una gráfica en
   la que se vea con claridad la señal antes y después de la cancelación (puede que `wavesurfer` no sea la
   mejor opción para esto, ya que no es capaz de visualizar varias señales al mismo tiempo).
+  
+  Se ha intentado hacer pero el resultado actual hace que una señal de la misma longitud que la de entrada pero de silencio.
 
 #### Gestión de las opciones del programa usando `docopt_c`
 
 - Si ha usado `docopt_c` para realizar la gestión de las opciones y argumentos del programa `vad`, inserte
   una captura de pantalla en la que se vea el mensaje de ayuda del programa.
+  
+  Solo se ha añadido la posibilidad de un argumento alfa1 que corresponde con el umbral de potencia.
 
 
 ### Contribuciones adicionales y/o comentarios acerca de la práctica
 
 - Indique a continuación si ha realizado algún tipo de aportación suplementaria (algoritmos de detección o 
   parámetros alternativos, etc.).
+  
+  En la parte donde se explica el código ya se ha explicado la mayoria de cosas, cabria destacar la forma en la que evitamos la repetición de segmentos de silencio ó voz, el cual se puede observar su codigo en  main_vad.c
 
 - Si lo desea, puede realizar también algún comentario acerca de la realización de la práctica que
   considere de interés de cara a su evaluación.
