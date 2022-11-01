@@ -187,6 +187,76 @@ Features compute_features(const float *x, int N) {
 
 ```
 
+###Implementación del FSA (Finite State Automata), para la detección de voz
+
+Como se puede observar en el código de abajo se ha optado por el uso de booleanos, esto es debido a que al utilizar las condiciones para la feature de zcr  (cruzes por cero), para diferenciar fonemas fricativos, los cuales tienen una tasa de cruces por cero mayor, una tasa de cruces por cero menor al ser una vocal o fonema sonoro i una tasa media de cruces por cero cuando hay ruido, por ese motivo, se opto el uso  de booleanos, para simplificar la comprensión del código. Para hacer uso de ellos, hemos tenido que añadir la libreia <stdbool.h>
+
+```c
+  Features f = compute_features(x, vad_data->frame_length);
+  vad_data->last_feature = f.p; /* save feature, in case you want to show */
+  
+  bool voice_zcr_low = f.zcr < vad_data->umbral_zcr_bajo;
+  bool voice_zcr_high = f.zcr > vad_data->umbral_zcr_alto;
+  bool silence_zcr = (f.zcr > vad_data->umbral_zcr_bajo) && (f.zcr < vad_data->umbral_zcr_alto);
+
+  switch (vad_data->state) {
+  case ST_INIT:                                                             /*Durante N_INIT muestras iniciales se calculara los umbrales de la señal*/
+    if(vad_data->frame < N_INIT) {
+      vad_data->umbral = vad_data->umbral + f.p;
+      vad_data->umbral_zcr_bajo = vad_data->umbral_zcr_bajo + f.zcr;
+      vad_data->umbral_zcr_alto = vad_data->umbral_zcr_alto + f.zcr;
+      vad_data->umbral_amplitud = vad_data->umbral_amplitud + f.am; 
+    }else{
+      vad_data->state = ST_SILENCE;
+      vad_data->umbral = vad_data->umbral/N_INIT + vad_data->alfa1;
+      vad_data->umbral_fric = vad_data->umbral + vad_data->alfa1/LLINDAR_FRIC;
+      vad_data->umbral_zcr_bajo = vad_data->umbral_zcr_bajo / (N_INIT*ZCR_LOW);
+      vad_data->umbral_zcr_alto = ZCR_HIGH * vad_data->umbral_zcr_alto/N_INIT;
+      vad_data->umbral_amplitud = vad_data->umbral_amplitud*(AMPLITUDE_OFFSET/N_INIT);
+      
+    }
+    break;
+
+  case ST_SILENCE:
+    if ( (f.p > vad_data->umbral_fric)  ||  (f.am > vad_data->umbral_amplitud)) {
+      vad_data->state = ST_MAYBE_VOICE;
+    }
+      vad_data->last_state = ST_SILENCE;
+      vad_data->last_defined_frame = vad_data->frame;
+
+    break;
+
+  case ST_VOICE:
+    if ((f.p < vad_data->umbral_fric && f.am < vad_data->umbral_amplitud) && silence_zcr)
+      vad_data->state = ST_MAYBE_SILENCE;
+    vad_data->last_state = ST_VOICE;
+    vad_data->last_defined_frame = vad_data->frame;
+    
+    break;
+
+  case ST_MAYBE_SILENCE:
+    if (((f.p > vad_data->umbral && voice_zcr_low) || (f.p < vad_data->umbral_fric && voice_zcr_high))  && (f.am > vad_data->umbral_amplitud)){
+      vad_data->state = ST_VOICE;
+    }
+    else if((vad_data->frame - vad_data->last_defined_frame) == UNDECIDED_S_FRAMES){
+      vad_data->state = ST_SILENCE;
+    }
+    break;
+  
+  case ST_MAYBE_VOICE:
+    if ((f.p < vad_data->umbral_fric  && silence_zcr) || (f.am < vad_data->umbral_amplitud)){
+      vad_data->state = ST_SILENCE;
+    }
+    else if((vad_data->frame - vad_data->last_defined_frame) == UNDECIDED_V_FRAMES){
+      vad_data->state = ST_VOICE;
+    }
+    break;
+
+  case ST_UNDEF:
+    break;
+  }
+```
+
 ### Trabajos de ampliación
 
 #### Cancelación del ruido en los segmentos de silencio
