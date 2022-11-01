@@ -287,7 +287,7 @@ La segunda diferencia, es con los comienzos de la voz. El detector, empieza a mo
   mejor opción para esto, ya que no es capaz de visualizar varias señales al mismo tiempo).
   
   Se ha intentado hacer pero el resultado actual pone a cero mas segmentos.
-  <img src="img/eliminacion ruido.png.png" width="640" align="center">  
+  <img src="img/eliminacion ruido.png" width="640" align="center">  
 
 #### Gestión de las opciones del programa usando `docopt_c`
 
