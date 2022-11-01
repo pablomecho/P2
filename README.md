@@ -257,6 +257,14 @@ Como se puede observar en el código de abajo se ha optado por el uso de boolean
   }
 ```
 
+FScore de nuestra frase
+
+<img src="img/run_vad lab.png" width="640" align="center">
+
+FScore sobre la base de datos
+
+<img src="img/run_vad DB4.png" width="640" align="center">
+
 ### Trabajos de ampliación
 
 #### Cancelación del ruido en los segmentos de silencio
