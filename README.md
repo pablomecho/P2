@@ -297,6 +297,18 @@ La segunda diferencia, es con los comienzos de la voz. El detector, empieza a mo
   
   <img src="img/binvad -h.png" width="640" align="center">
 
+  Usamos este umbral para detectar cuando estamos en un segmento de voz y cuando en uno de silencio.
+  Lo incorporamos en vad_docopt.h (donde también modificamos el mensaje de ayuda del programa):
+  
+  <img src="docotps args alfa 1.png" width="640" align="center">
+  
+  Después, añadimos el umbral a la estructura de datos VAD_DATA incluida en vad.c:
+  
+  <img src="docopt estructura vad_c.png" width="640" align="center">
+
+  Y por último, fijamos un valor en el main_vad.c:
+  
+  <img src="declaracion alfa1.png" width="640" align="center">
 
 ### Contribuciones adicionales y/o comentarios acerca de la práctica
 
