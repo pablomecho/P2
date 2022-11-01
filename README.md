@@ -153,6 +153,40 @@ Ejercicios
 
 <img src="img/Gráfica con etiquetado manual y automatico_con mayores restricciones.png" width="640" align="center">
 
+A partir de este punto, explicaremos el código elaborado.
+
+### Código del fichero **vad.c**
+
+####Constantes y umbrales
+
+```c
+const float FRAME_TIME = 10.0F; /* in ms. */
+const int N_INIT = 4;                   /*iteraciones iniciales sobre las que haremos medias de las features*/
+const int UNDECIDED_V_FRAMES = 1;       /*Tramas de ST_MAYBE_VOICE máximas*/
+const int UNDECIDED_S_FRAMES = 9;       /*Tramas de ST_MAYBE_SILENCE máximas*/
+const float LLINDAR_FRIC = 0.9;         /*Coeficiente para el umbral de las fricativas*/
+const float ZCR_LOW = 1.4;              /*Coeficiente para el umbral de ZCR baja*/
+const float ZCR_HIGH = 1.4;             /*Coeficiente para el umbral ze ZCR alta*/
+const float AMPLITUDE_OFFSET = 3.6;     /*Coeficiente para el umbral de amplitud*/
+```
+
+####Cálculo de las Features
+
+Para realizar el cálculo de las features (Potencia, ZCR e Amplitud media), hacemos uso de las funciones elaboradas en la práctica. Por lo tanto, la función __*Features compute_features*__, la qual nos guarda los valores calculados de Potencia, ZCR e amplitud media en la variable feat.
+
+```c
+Features compute_features(const float *x, int N) {
+ 
+  Features feat;
+  feat.p = compute_power(x,N);
+  feat.zcr = compute_zcr(x, N, N/(FRAME_TIME*1e-03));
+  feat.am = compute_am(x, N);
+  
+  return feat;
+}
+
+```
+
 ### Trabajos de ampliación
 
 #### Cancelación del ruido en los segmentos de silencio
