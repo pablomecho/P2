@@ -120,7 +120,7 @@ Ejercicios
 	
 		**`La imagen siguiente corresponde, a la ejecución del cat de nuestro etiquetado, en el vemos los 		intervalos de la silencio y voz de la señal `**
 	
-		<img src="img/" width="640" align="center">
+		<img src="img/Intervalos señal.png" width="640" align="center">
 	
 	  	```.sh
 	  	Duración mínima voz: 400 ms
