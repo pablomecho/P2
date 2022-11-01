@@ -269,6 +269,10 @@ FScore sobre la base de datos
 
 <img src="img/etiquetado automatico final.png" width="640" align="center">
 
+En la gráfica anterior de etiquetado automático, podemos observar algunas pequeñas diferencias respecto al etiquetado manual. Nos fijamos básicamente en dos.
+La primera, un pqueño retardo para empezar a detectar el silencio. El detector automático racciona un poco tarde cuando la voz ya ha acabado. Aunque es una diferencia mínima.
+La segunda diferencia, es con los comienzos de la voz. El detector, empieza a mostrar como voz un poco más tarde, y la confunde con un silencio. Aunque, este segundo problema se muestra menos, y está bastante ajustado.
+
 ### Trabajos de ampliación
 
 #### Cancelación del ruido en los segmentos de silencio
