@@ -286,7 +286,8 @@ La segunda diferencia, es con los comienzos de la voz. El detector, empieza a mo
   la que se vea con claridad la señal antes y después de la cancelación (puede que `wavesurfer` no sea la
   mejor opción para esto, ya que no es capaz de visualizar varias señales al mismo tiempo).
   
-  Se ha intentado hacer pero el resultado actual hace que una señal de la misma longitud que la de entrada pero de silencio.
+  Se ha intentado hacer pero el resultado actual pone a cero mas segmentos.
+  <img src="img/eliminacion ruido.png.png" width="640" align="center">  
 
 #### Gestión de las opciones del programa usando `docopt_c`
 
