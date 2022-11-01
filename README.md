@@ -294,6 +294,8 @@ La segunda diferencia, es con los comienzos de la voz. El detector, empieza a mo
   una captura de pantalla en la que se vea el mensaje de ayuda del programa.
   
   Solo se ha añadido la posibilidad de un argumento alfa1 que corresponde con el umbral de potencia.
+  
+  <img src="img/binvad -h.png" width="640" align="center">
 
 
 ### Contribuciones adicionales y/o comentarios acerca de la práctica
